@@ -1,0 +1,79 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Guitar销售系统</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="icon" type="image/png" href="assets/i/favicon.png">
+  <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+<div class="am-cf admin-main">
+    <div class="admin-content">
+    <div class="am-cf am-padding">
+      <div class="am-fl am-cf"><strong>Guitar查询</strong>&nbsp;&nbsp;需要添加新产品请点击<a href="GuitarAdd.html">添加</a>！</div>
+    </div>
+    <div class="am-g">
+      <div class="am-u-sm-12">
+        <form class="am-form">
+          <table class="am-table am-table-striped am-table-hover table-main">
+            <thead>
+              <tr>
+                <th>序列号	</th>
+                <th>制作人</th>
+                <th>模型</th>
+                <th>类型</th>
+                <th>背部材质</th>
+                <th>顶部材质</th>
+                <th>价格</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/app.js"></script>
+
+<script type="text/javascript">
+   	$(document).ready(function(){
+   			$.getJSON("../SearchGuitarServlet",function(jsonData){
+   				$("table tbody tr:gt(0)").remove();
+   				var html = "";
+   				var obj=jsonData[0];
+   				for(var i=0;i<obj.length;i++){
+    				html += "<tr><td>" + obj[i].serialNumber + "</td>";
+    				html += "<td>" + obj[i].builder + "</td>";
+    				html += "<td>" + obj[i].model + "</td>";
+    				html += "<td>" + obj[i].type + "</td>";
+    				html += "<td>" + obj[i].backWood + "</td>";
+    				html += "<td>" + obj[i].topWood + "</td>";
+    				html += "<td>" + obj[i].price + "</td>";
+    				html += "<td><a name=\"del\" href=\"../DelGuitarServlet?serialNumber="+obj[i].serialNumber+"\">删除</a></td></tr>";
+   				}
+   				$("table tbody").append(html);
+   				$(	"a[name='del']").click(function(){
+   					if(confirm("确定删除？")){
+   						return true; 
+   					}else{ 
+   						return false; 
+   					}
+   				});
+   			});
+   	});
+</script>
+</body>
+</html>
